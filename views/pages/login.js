@@ -26,9 +26,16 @@ const loginUser = async() => {
         email,
         password,
     });
-    localStorage.setItem("name", authUser.fullname);
-    localStorage.setItem("email", authUser.email);
-    localStorage.setItem("auth", true);
-    window.location.href = "http://localhost/blog-management-system/views/#home";
-    return true;
+    if (!authUser.error) {
+        localStorage.setItem("name", authUser.fullname);
+        localStorage.setItem("email", authUser.email);
+        localStorage.setItem("user_id", authUser._id);
+        localStorage.setItem("auth", true);
+        window.location.href = "http://localhost/blog-management-system/views/#home";
+    } else {
+        console.log(authUser.error);
+        alert("Omoooo something don happen you no fit login!");
+        localStorage.setItem("auth", false);
+        window.location.href = "http://localhost/blog-management-system/views/#signup";
+    }
 }

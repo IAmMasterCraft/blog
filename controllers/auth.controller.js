@@ -26,7 +26,7 @@ exports.signup = async(request, response) => {
                         success: true,
                         fullname,
                         email,
-                        token: request.cookies.token,
+                        _id: newUser._id,
                     });
                 }
             });
@@ -56,7 +56,6 @@ exports.login = async(request, response) => {
                         _id: myUser._id,
                         fullname: myUser.fullname,
                         email: myUser.email,
-                        token: request.cookies.token,
                     };
                     response.status(201).json(responseData);
                 } else response.status(403).json({ error: "passwords do not match" });
@@ -87,4 +86,11 @@ exports.forgotPassword = async(request, response) => {
     } catch (error) {
         response.status(500).json(error);
     }
+}
+
+exports.logout = (request, response) => {
+    response.clearCookie("token").status(200).json({
+        success: true,
+        message: "user logged out",
+    });
 }

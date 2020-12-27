@@ -5,7 +5,7 @@ const apiGet = async(apiConfigObject, data = {}) => {
             method: apiConfigObject.method, // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
+            credentials: 'include', // include, *same-origin, omit
             headers: {
                 'Content-Type': 'application/json'
                     // 'Content-Type': 'application/x-www-form-urlencoded',
@@ -23,6 +23,7 @@ const apiGet = async(apiConfigObject, data = {}) => {
             author: "BackendService",
             dateGenerated: new Date(Date.now()),
             size: "12",
+            path: true,
         }]
     }
 
@@ -35,7 +36,7 @@ const apiOthers = async(apiConfigObject, data = {}) => {
             method: apiConfigObject.method, // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
+            credentials: 'include', // include, *same-origin, omit
             headers: {
                 'Content-Type': 'application/json'
                     // 'Content-Type': 'application/x-www-form-urlencoded',
@@ -54,6 +55,7 @@ const apiOthers = async(apiConfigObject, data = {}) => {
             author: "BackendService",
             dateGenerated: new Date(Date.now()),
             size: "12",
+            path: true,
         }]
     }
 
@@ -66,7 +68,7 @@ const htmlGet = async(apiConfigObject, data = {}) => {
             method: apiConfigObject.method, // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
+            credentials: 'include', // include, *same-origin, omit
             headers: {
                 'Content-Type': 'application/json'
                     // 'Content-Type': 'application/x-www-form-urlencoded',
@@ -91,6 +93,15 @@ const getAllBlogPost = async() => {
     return blogPost;
 }
 
+const getOneBlogPost = async(postId) => {
+    const blogPost = await apiGet({
+        url: `http://localhost:3000/api/blog-post/${postId}/`,
+        method: "GET",
+    });
+
+    return blogPost;
+}
+
 const getSignUpPage = async() => {
     const signUp = await htmlGet({
         url: "./pages/signup.html",
@@ -102,6 +113,30 @@ const getSignUpPage = async() => {
 const getLoginPage = async() => {
     const login = await htmlGet({
         url: "./pages/login.html",
+        method: "GET",
+    });
+    return login;
+}
+
+const getReadPage = async() => {
+    const read = await htmlGet({
+        url: "./pages/read.html",
+        method: "GET",
+    });
+    return read;
+}
+
+const getEditPage = async() => {
+    const edit = await htmlGet({
+        url: "./pages/edit.html",
+        method: "GET",
+    });
+    return edit;
+}
+
+const getCreatePage = async() => {
+    const login = await htmlGet({
+        url: "./pages/create.html",
         method: "GET",
     });
     return login;
@@ -121,4 +156,28 @@ const authorization = async(data) => {
         method: "POST",
     }, data);
     return login;
+}
+
+const createPost = async(data) => {
+    const post = await apiOthers({
+        url: "http://localhost:3000/api/blog-post/new/",
+        method: "POST",
+    }, data);
+    return post;
+}
+
+const updatePost = async(data) => {
+    const post = await apiOthers({
+        url: "http://localhost:3000/api/blog-post/update/",
+        method: "POST",
+    }, data);
+    return post;
+}
+
+const validateLogout = async() => {
+    const finalLogout = await apiGet({
+        url: "http://localhost:3000/api/logout/",
+        method: "GET",
+    });
+    return finalLogout;
 }

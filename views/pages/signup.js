@@ -34,8 +34,15 @@ const registerUser = async() => {
         email,
         password,
     });
-    localStorage.setItem("name", newUser.fullname);
-    localStorage.setItem("email", newUser.email);
-    window.location.href("http://localhost/blog-management-system/views/#login")
-    return true;
+    if (!newUser.error) {
+        localStorage.setItem("name", newUser.fullname);
+        localStorage.setItem("email", newUser.email);
+        window.location.href("http://localhost/blog-management-system/views/#login")
+        return true;
+    } else {
+        console.log(newUser.error);
+        window.location.href("http://localhost/blog-management-system/views/#signup")
+        return false;
+    }
+
 }

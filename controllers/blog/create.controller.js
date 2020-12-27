@@ -12,6 +12,7 @@ exports.createPost = async(request, response) => {
                 image,
                 content,
                 author: authenticatedUser.fullname,
+                user_id: authenticatedUser._id,
                 tags,
                 category,
             });

@@ -18,6 +18,38 @@ const loginRoutes = () => {
 }
 
 /**
+ * logout routes
+ */
+
+const logoutRoutes = () => {
+    return ((getRoute()) && getRoute().includes("logout")) ? true : false;
+}
+
+/**
+ * read routes
+ */
+
+const readRoutes = () => {
+    return ((getRoute()) && getRoute().includes("read")) ? true : false;
+}
+
+/**
+ * edit routes
+ */
+
+const editRoutes = () => {
+    return ((getRoute()) && getRoute().includes("edit")) ? true : false;
+}
+
+/**
+ * delete routes
+ */
+
+const deleteRoutes = () => {
+    return ((getRoute()) && getRoute().includes("delete")) ? true : false;
+}
+
+/**
  * Create blog post routes
  */
 

@@ -1,13 +1,25 @@
 require('dotenv').config();
 const express = require("express");
+const bodyParser = require("body-parser");
 // cors
 const cors = require("cors");
 const mongoose = require("mongoose");
 const app = express();
 //cookie-parser
 const cookieParser = require('cookie-parser');
+
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+
 //cors setup
-app.use(cors());
+const corsOption = {
+    origin: (origin, callback) => {
+        return callback(null, true);
+    },
+    optionsSuccessStatus: 200,
+    credentials: true,
+};
+app.use(cors(corsOption));
 app.use(cookieParser());
 
 //my routes

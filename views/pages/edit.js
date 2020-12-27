@@ -1,4 +1,4 @@
-const create = () => {
+const edit = () => {
     /**
      * empty parent(s) DOM
      */
@@ -7,26 +7,26 @@ const create = () => {
     /**
      * set nav
      */
-    activeNav(".create")
+    // activeNav(".create")
 
     /**
      * set content
      */
-    createToDom();
+    const blogPostData = editToDom();
+
+    console.log(blogPostData);
 }
 
-const loadImage = (imageFile) => {
-    if (imageFile.files && imageFile.files[0]) {
-        const readImage = new FileReader();
-        readImage.onload = (e) => {
-            $("#image-preview").attr("src", e.target.result).show();
-            $('textarea#image').val(e.target.result);
-        }
-        readImage.readAsDataURL(imageFile.files[0]);
-    }
+const dataToForm = (blogPost) => {
+    $("#image-preview").attr("src");
+    $("#title").val();
+    $("#content").val();
+    $("#image").val();
 }
 
-const newBlogPost = async() => {
+const updateBlogPost = (postId) => {
+    const presentRoute = getRoute().split("/");
+    const id = presentRoute[presentRoute.length - 1];
     const title = $("#title").val();
     const content = $("#content").val();
     const image = $("#image").val();
@@ -34,7 +34,8 @@ const newBlogPost = async() => {
         alert("All fields are required!");
         return false;
     }
-    const blogPost = await createPost({
+    const blogPost = await updatePost({
+        id,
         title,
         content,
         image,
@@ -42,7 +43,7 @@ const newBlogPost = async() => {
 
     if (!blogPost.error) {
         localStorage.setItem("auth", true);
-        window.location.href = "http://localhost/blog-management-system/views/#home";
+        window.location.href = `http://localhost/blog-management-system/views/#read/${id}`;
         return true;
     } else {
         console.log(blogPost.error);
