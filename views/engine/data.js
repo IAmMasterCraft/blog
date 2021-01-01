@@ -169,7 +169,7 @@ const createPost = async(data) => {
 const updatePost = async(data) => {
     const post = await apiOthers({
         url: "http://localhost:3000/api/blog-post/update/",
-        method: "POST",
+        method: "PUT",
     }, data);
     return post;
 }

@@ -1,10 +1,12 @@
 require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
+const morgan = require('morgan');
 // cors
 const cors = require("cors");
 const mongoose = require("mongoose");
 const app = express();
+app.use(morgan("combined"));
 //cookie-parser
 const cookieParser = require('cookie-parser');
 
@@ -25,6 +27,7 @@ app.use(cookieParser());
 //my routes
 const authRoute = require('./routes/auth.route');
 const readBlogPostRoute = require('./routes/read.route');
+const likesRoute = require('./routes/blog/likes.route');
 const createBlogPostRoute = require('./routes/blog/create.route');
 const updateBlogPostRoute = require('./routes/blog/update.route');
 const deleteBlogPostRoute = require('./routes/blog/delete.route');
@@ -41,6 +44,7 @@ mongoose.connect(db.mongoURI, db.mongoSetup)
 app.use(express.json());
 
 app.use('/api', authRoute);
+app.use('/api', likesRoute);
 app.use('/api', readBlogPostRoute);
 app.use('/api', createBlogPostRoute);
 app.use('/api', updateBlogPostRoute);

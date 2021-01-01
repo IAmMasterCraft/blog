@@ -1,4 +1,4 @@
-const edit = () => {
+const edit = async() => {
     /**
      * empty parent(s) DOM
      */
@@ -12,25 +12,29 @@ const edit = () => {
     /**
      * set content
      */
-    const blogPostData = editToDom();
+    const blogPostData = await editToDom();
 
-    console.log(blogPostData);
+    dataToForm(blogPostData);
 }
 
 const dataToForm = (blogPost) => {
-    $("#image-preview").attr("src");
-    $("#title").val();
-    $("#content").val();
-    $("#image").val();
+    blogPost.map(post => {
+        $("#image-preview").attr("src", post.image).show();
+        $("#title").val(post.title);
+        $("#content").val(post.content);
+        $("#image").val(post.image);
+        $("#form-submit").attr("onclick", `updateBlogPost("${post._id}")`);
+    });
+
 }
 
-const updateBlogPost = (postId) => {
-    const presentRoute = getRoute().split("/");
-    const id = presentRoute[presentRoute.length - 1];
+const updateBlogPost = async(postId) => {
+    // const presentRoute = getRoute().split("/");
+    const id = postId;
     const title = $("#title").val();
     const content = $("#content").val();
     const image = $("#image").val();
-    if (!title || !content) {
+    if (!title || !content || !id) {
         alert("All fields are required!");
         return false;
     }
@@ -43,12 +47,12 @@ const updateBlogPost = (postId) => {
 
     if (!blogPost.error) {
         localStorage.setItem("auth", true);
-        window.location.href = `http://localhost/blog-management-system/views/#read/${id}`;
+        window.location.href = `http://localhost/blog-management-system/views/#read/${blogPost.title.replace(/ /g, "-").toLowerCase()}-${blogPost._id}`;
         return true;
     } else {
         console.log(blogPost.error);
-        localStorage.setItem("auth", false);
-        window.location.href = "http://localhost/blog-management-system/views/#create";
+        // localStorage.setItem("auth", false);
+        window.location.href = `http://localhost/blog-management-system/views/#edit/${blogPost.title.replace(/ /g, "-").toLowerCase()}-${blogPost._id}`;
         return true;
     }
 }

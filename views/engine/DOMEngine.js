@@ -7,29 +7,29 @@ const singlePostCard = (size, blogObject) => {
                                     </div>
                                     <div class="down-content">
                                         <!-- <span>Lifestyle</span> -->
-                                        <a href="#read/${blogObject._id}">
-                                            <h4>${blogObject.title}</h4>
+                                        <a href="#read/${blogObject.title.replace(/ /g, "-").toLowerCase()}-${blogObject._id}">
+                                            <h4>${blogObject.title} ${(blogObject.dateUpdated) ? "Updated!!!" : ""}</h4>
                                         </a>
                                         <ul class="post-info">
                                             <li><a href="#">${blogObject.author}</a></li>
-                                            <li><a href="#">${blogObject.dateGenerated}</a></li>
-                                            <!-- <li><a href="#">12 Comments</a></li> -->
+                                            <li><a href="#">${(blogObject.dateUpdated) ? blogObject.dateUpdated : blogObject.dateGenerated}</a></li>
+                                            <li><a href="#">Likes</a></li>
                                         </ul>
                                         <p>
                                             ${blogObject.content}
-                                            ${(blogObject.content.length > 200) ? `<br><a href='#read/${blogObject._id}'>Continue Reading...</a>` : ""}
+                                            ${(blogObject.content.length > 200 && !blogObject.read) ? `<br><a href='#read/${blogObject._id}'>Continue Reading...</a>` : ""}
                                         </p>
                                         ${
                                             (isAuth(blogObject.path) && blogObject.author === localStorage.getItem("name") && blogObject.user_id === localStorage.getItem("user_id")) ? `<div class="post-options">
                                             <div class="row">
                                                 <div class="col-6">
                                                     <ul class="post-tags">
-                                                        <li><a href="#edit/${blogObject._id}"><i class="fa fa-edit"></i>&nbsp;Edit</a></li>
+                                                        <li><a href="#edit/${blogObject.title.replace(/ /g, "-").toLowerCase()}-${blogObject._id}"><i class="fa fa-edit"></i>&nbsp;Edit</a></li>
                                                     </ul>
                                                 </div>
                                                 <div class="col-6">
                                                     <ul class="post-share">
-                                                        <li><a href="#delete/${blogObject._id}"><i class="fa fa-trash-o"></i>&nbsp;Delete</a></li>
+                                                        <li><a href="#delete/${blogObject.title.replace(/ /g, "-").toLowerCase()}-${blogObject._id}"><i class="fa fa-trash-o"></i>&nbsp;Delete</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -72,13 +72,15 @@ const activeNav = (newClass) => {
     $(newClass).addClass("active");
 }
 
-const blogPostToDom = async() => {
-    const availablePost = await getAllBlogPost();
+const blogPostToDom = async(blogPost = false) => {
+    const availablePost = (blogPost) ? blogPost : await getAllBlogPost();
     try {
         availablePost.map(post => {
             const blogObject = post;
             blogObject.path = true,
-            blogObject.content = (post.content.length > 200) ? post.content.substr(0, 200) : post.content;
+            blogObject.read = (blogPost) ? true : false,
+            blogObject.size = (blogPost) ? "12" : blogObject.size || "6",
+            blogObject.content = (post.content.length > 200 && !blogObject.read) ? post.content.substr(0, 200) : post.content;
             $("#root").append(singlePostCard((blogObject.size) ? blogObject.size : "6", blogObject));
         });
     } catch (error) {
@@ -86,8 +88,8 @@ const blogPostToDom = async() => {
         const errorObject = [{
             image: "https://iammastercraft.github.io/mobileFirstAid/svg/404.svg",
             title: "Error",
-            content: "Couldn't communicate with API",
-            author: "BackendService",
+            content: "Omoo data no choke well",
+            author: "FrontendService",
             dateGenerated: new Date(Date.now()),
             size: "12",
             path: true,
@@ -118,15 +120,14 @@ const createToDom = async() => {
 }
 
 const readToDom = async () => {
-    const presentRoute = getRoute().split("/");
-    const readPage = await getReadPage();
+    const presentRoute = getRoute().split("-");
     const onePost = await getOneBlogPost(presentRoute[presentRoute.length - 1]);
-    $("#root").html(readPage);
-    return onePost;
+    // $("#root").html(readPage);
+    blogPostToDom(onePost);
 }
 
 const editToDom = async () => {
-    const presentRoute = getRoute().split("/");
+    const presentRoute = getRoute().split("-");
     const editPage = await getEditPage();
     const onePost = await getOneBlogPost(presentRoute[presentRoute.length - 1]);
     $("#root").html(editPage);

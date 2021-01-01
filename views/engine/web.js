@@ -10,7 +10,7 @@ const doesHttpOnlyCookieExist = (cookiename) => {
 const hashChange = async() => {
     $("#navbar").empty().append(navItem());
     (!$(".navbar-toggler").attr("class").includes("collapsed")) ? $(".navbar-toggler").click(): "";
-    (homeRoutes() || signUpRoutes() || loginRoutes()) ? isAuth(true): isAuth();
+    (homeRoutes() || readRoutes() || signUpRoutes() || loginRoutes()) ? isAuth(true): isAuth();
 
     const presentRoute = getRoute();
     //home

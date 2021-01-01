@@ -13,5 +13,4 @@ const read = () => {
      * set content
      */
     const blogPostData = readToDom();
-    console.log(blogPostData);
 }
