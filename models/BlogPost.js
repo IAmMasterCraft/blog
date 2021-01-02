@@ -28,10 +28,7 @@ const BlogPost = new Schema({
     category: {
         type: String,
     },
-    likes: [{
-        type: Schema.Types.ObjectId,
-        ref: "Likes",
-    }],
+    likes: [],
     dateGenerated: {
         type: Date,
         default: Date.now()
