@@ -7,9 +7,12 @@ exports.newLikes = async(request, response) => {
         const id = request.body.post_id;
         //check if required exist
         if (id && authenticatedUser) {
-            const myLikes = await BlogPost.update({ _id: id }, {
+            const myLikes = await BlogPost.updateOne({ _id: id }, {
                 $addToSet: {
-                    likes: authenticatedUser._id,
+                    likes: {
+                        id: authenticatedUser._id,
+                        fullname: authenticatedUser.fullname,
+                    },
                 },
             });
             myLikes.success = true;
@@ -28,9 +31,12 @@ exports.removeLikes = async(request, response) => {
         const id = request.body.post_id;
         //check if required exist
         if (id && authenticatedUser) {
-            const myLikes = await BlogPost.update({ _id: id }, {
+            const myLikes = await BlogPost.updateOne({ _id: id }, {
                 $pull: {
-                    likes: authenticatedUser._id,
+                    likes: {
+                        id: authenticatedUser._id,
+                        fullname: authenticatedUser.fullname,
+                    },
                 },
             });
             myLikes.success = true;

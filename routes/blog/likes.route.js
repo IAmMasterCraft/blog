@@ -4,7 +4,7 @@ const middleware = require("../../middlewares/auth.middleware")
 
 const controller = require("../../controllers/blog/likes.controller");
 
-router.post("/blog-post/like/new", middleware.verifyToken, controller.newLikes);
+router.put("/blog-post/like/new", middleware.verifyToken, controller.newLikes);
 
 router.delete("/blog-post/like/remove", middleware.verifyToken, controller.removeLikes);
 
