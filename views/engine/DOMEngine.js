@@ -13,7 +13,7 @@ const singlePostCard = (size, blogObject) => {
                                         <ul class="post-info">
                                             <li><a href="#">${blogObject.author}</a></li>
                                             <li><a href="#">${(blogObject.dateUpdated) ? blogObject.dateUpdated : blogObject.dateGenerated}</a></li>
-                                            <li><a href="#">Likes</a></li>
+                                            <li onclick="manageLikes('${{ id: blogObject._id, likes: blogObject.likes }}')"><a href="#" id="">${blogObject.likes.length} <i class="fa fa-heart-o"></i>&nbsp;</a></li>
                                         </ul>
                                         <p>
                                             ${blogObject.content}
@@ -75,7 +75,7 @@ const activeNav = (newClass) => {
 const blogPostToDom = async(blogPost = false) => {
     const availablePost = (blogPost) ? blogPost : await getAllBlogPost();
     try {
-        availablePost.map(post => {
+        availablePost.forEach(post => {
             const blogObject = post;
             blogObject.path = true,
             blogObject.read = (blogPost) ? true : false,
@@ -94,7 +94,7 @@ const blogPostToDom = async(blogPost = false) => {
             size: "12",
             path: true,
         }];
-        errorObject.map(post => {
+        errorObject.forEach(post => {
             const blogObject = post;
             blogObject.content = (post.content.length > 200) ? post.content.substr(0, 200) : post.content;
             $("#root").append(singlePostCard((blogObject.size) ? blogObject.size : "6", blogObject));

@@ -19,6 +19,7 @@ const apiGet = async(apiConfigObject, data = {}) => {
         return [{
             image: "https://iammastercraft.github.io/mobileFirstAid/svg/404.svg",
             title: "Error",
+            likes: [],
             content: "Couldn't communicate with API",
             author: "BackendService",
             dateGenerated: new Date(Date.now()),
@@ -51,6 +52,7 @@ const apiOthers = async(apiConfigObject, data = {}) => {
         return [{
             image: "https://iammastercraft.github.io/mobileFirstAid/svg/404.svg",
             title: "Error",
+            likes: [],
             content: "Couldn't communicate with API",
             author: "BackendService",
             dateGenerated: new Date(Date.now()),
@@ -90,7 +92,7 @@ const getAllBlogPost = async() => {
         method: "GET",
     });
 
-    return blogPost;
+    return (Array.isArray(blogPost)) ? blogPost : [blogPost];
 }
 
 const getOneBlogPost = async(postId) => {
@@ -99,7 +101,7 @@ const getOneBlogPost = async(postId) => {
         method: "GET",
     });
 
-    return blogPost;
+    return (Array.isArray(blogPost)) ? blogPost : [blogPost];
 }
 
 const getSignUpPage = async() => {
